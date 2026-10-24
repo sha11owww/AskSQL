@@ -1,0 +1,20 @@
+* text=auto eol=lf
+
+*.sh        text eol=lf
+*.py        text eol=lf
+*.ts        text eol=lf
+*.vue       text eol=lf
+*.md        text eol=lf
+*.json      text eol=lf
+*.yml       text eol=lf
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+
+# 演示数据集：体积大且内容固定，标记为生成文件，
+# 折叠 GitHub diff 并降低语言统计占比
+backend/data/databases/**/*.csv  linguist-generated=true -diff
+backend/data/eval/*.jsonl        linguist-generated=true
+
+*.png binary
+*.jpg binary
+*.ico binary
