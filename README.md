@@ -5,7 +5,7 @@
 基于 **FastAPI + LangGraph + DuckDB** 的 Text-to-SQL Agent，前端为 **Vue 3**。内置一套 55 张表、
 422 个字段、85 条表间关联的合成电商数据集，开箱即可运行。
 
-[![CI](https://github.com/sha11owww/asksql/actions/workflows/ci.yml/badge.svg)](https://github.com/sha11owww/asksql/actions/workflows/ci.yml)
+[![CI](https://github.com/sha11owww/AskSQL/actions/workflows/ci.yml/badge.svg)](https://github.com/sha11owww/AskSQL/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
