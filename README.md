@@ -2,8 +2,7 @@
 
 > 自然语言问数系统：把「帮我查一下本月各地区销售额」变成一条可执行、可校验、可追溯的 SQL。
 
-基于 **FastAPI + LangGraph + DuckDB** 的 Text-to-SQL Agent，前端为 **Vue 3**。内置一套 55 张表、
-422 个字段、85 条表间关联的合成电商数据集，开箱即可运行。
+基于 **FastAPI + LangGraph** 的 Text-to-SQL Agent，开箱即可运行。
 
 [![CI](https://github.com/sha11owww/AskSQL/actions/workflows/ci.yml/badge.svg)](https://github.com/sha11owww/AskSQL/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -18,7 +17,7 @@ Text-to-SQL 的难点从来不是「能不能生成一条 SQL」，而是三件�
 | 问题 | 本项目的做法 |
 |---|---|
 | 表太多，模型不知道看哪些字段 | 字段级混合检索（BM25 + Dense + RRF + Rerank），只把候选字段送进上下文 |
-| 字段对了，但表之间怎么关联不知道 | 用预定义的 85 条关联做 BFS 最短路，把孤立字段连成连通子图 |
+| 字段对了，但表之间怎么关联不知道 | 用预定义的关联做 BFS 最短路，把孤立字段连成连通子图 |
 | SQL 跑通了，但算的不是用户要的 | 三层校验：意图规则比对 → 模型自评 → 带反馈重写 |
 
 ---
@@ -183,21 +182,6 @@ cd backend
 cd backend
 ./.venv/Scripts/python.exe -m unittest discover -s tests
 ```
-
----
-
-## 已知边界
-
-这些是明确的设计取舍，不是疏漏：
-
-- **多库查询尚未实现**。`run_multi_database` 节点为预留位，当前按单库路由。
-- **重试预算未全局统一**。HTTP 重试、工具调用循环、校验重写各自计数，极端情况下会叠乘。
-- **错误分类较粗**。`Catalog Error`（表不存在，应回检索）与 `Binder Error`（字段写错，应重写 SQL）目前同样处理。
-- **空结果不做探针判定**。`rows = 0` 无法区分「业务上就是 0」与「过滤条件写过头」。
-- **路由层只做互斥分类**。复合请求的判定依赖提示词，缺少「无历史数据时不可能走分析」这类硬约束兜底。
-- **上下文行数上限 50 行**。分析只看样本，精确聚合全部下推给 SQL。
-
-以上均记录在 [docs/architecture.md](docs/architecture.md) 的「设计取舍」一节。
 
 ---
 
